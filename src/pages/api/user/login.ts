@@ -45,7 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     db.disconnectDB();
 
-    res.status(200).json({
+    return res.status(200).json({
       accessToken,
       user: {
         id: user._id,
@@ -58,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   } catch (error) {
     console.error('[Login API Error]:', error);
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Internal server error',
     });
   }

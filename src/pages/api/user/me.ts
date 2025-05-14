@@ -8,18 +8,20 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
 // ----------------------------------------------------------------------
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   try {
     await cors(req, res);
 
     if (req.method !== 'GET') {
-      return res.status(405).json({ message: 'Method not allowed' });
+      res.status(405).json({ message: 'Method not allowed' });
+      return;
     }
 
     const { authorization } = req.headers;
 
     if (!authorization) {
-      return res.status(401).json({ message: 'Authorization token missing' });
+      res.status(401).json({ message: 'Authorization token missing' });
+      return;
     }
 
     const accessToken = `${authorization}`.split(' ')[1];
@@ -29,13 +31,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       decodedToken = verify(accessToken, JWT_SECRET);
     } catch (err) {
-      return res.status(401).json({ message: 'Invalid or expired token' });
+      res.status(401).json({ message: 'Invalid or expired token' });
+      return;
     }
 
     const userId = decodedToken?.userId;
 
     if (!userId) {
-      return res.status(401).json({ message: 'Invalid token payload' });
+      res.status(401).json({ message: 'Invalid token payload' });
+      return;
     }
 
     await db.connectDB();
@@ -43,7 +47,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const user = await User.findById(userId).select('-password');
 
     if (!user) {
-      return res.status(401).json({ message: 'User not found' });
+      await db.disconnectDB();
+      res.status(401).json({ message: 'User not found' });
+      return;
     }
 
     await db.disconnectDB();

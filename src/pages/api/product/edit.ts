@@ -2,10 +2,11 @@ import { NextApiRequest, NextApiResponse } from 'next';
 // utils
 import cors from 'src/utils/cors';
 import slugify from 'slugify';
+import Product from 'src/models/product';
+
 
 // _mock
 import db from '../../../utils/db';
-import Product from 'src/models/product';
 // ----------------------------------------------------------------------
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

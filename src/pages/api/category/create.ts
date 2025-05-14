@@ -7,8 +7,9 @@ import slugify from 'slugify';
 import cors from 'src/utils/cors';
 // _mock
 import { _users, JWT_SECRET, JWT_EXPIRES_IN } from 'src/_mock/_auth';
-import db from '../../../utils/db';
 import Category from 'src/models/category';
+
+import db from '../../../utils/db';
 // ----------------------------------------------------------------------
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -31,12 +32,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     db.disconnectDB();
 
-    res.status(200).json({
+    return res.status(200).json({
       category: newCategory,
     });
   } catch (error) {
     console.error('[Auth API]: ', error);
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Internal server error',
     });
   }
