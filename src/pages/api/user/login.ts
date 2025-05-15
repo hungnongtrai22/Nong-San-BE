@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    db.connectDB();
+    await db.connectDB();
 
     const { email, password } = req.body;
 
@@ -28,14 +28,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const user = await User.findOne({ email });
 
     if (!user) {
-      db.disconnectDB();
       return res.status(401).json({ message: 'Invalid email or password.' });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      db.disconnectDB();
       return res.status(401).json({ message: 'Invalid email or password.' });
     }
 
@@ -43,7 +41,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       expiresIn: JWT_EXPIRES_IN,
     });
 
-    db.disconnectDB();
 
     return res.status(200).json({
       accessToken,

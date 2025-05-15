@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    db.connectDB();
+    await db.connectDB();
 
     const {
       _id,
@@ -36,7 +36,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } = req.body;
 
     if (!_id) {
-      db.disconnectDB();
       return res.status(400).json({ message: 'Missing product ID (_id)' });
     }
 
@@ -65,7 +64,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       { new: true }
     );
 
-    db.disconnectDB();
 
     if (!updatedProduct) {
       return res.status(404).json({ message: 'Product not found' });

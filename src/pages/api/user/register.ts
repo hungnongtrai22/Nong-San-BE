@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    db.connectDB();
+    await db.connectDB();
 
     const { email, password, name } = req.body;
 
@@ -45,7 +45,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       expiresIn: JWT_EXPIRES_IN,
     });
 
-    db.disconnectDB();
 
     return res.status(201).json({
       accessToken,

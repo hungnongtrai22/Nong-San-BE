@@ -11,19 +11,18 @@ import Category from 'src/models/category';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     await cors(req, res);
-    db.connectDB();
+    await db.connectDB();
 
     const products = await Product.find()
       .populate({ path: 'category', model: Category })
       .sort({ createdAt: -1 })
       .lean();
-    db.disconnectDB();
-    res.status(200).json({
+    return res.status(200).json({
       products,
     });
   } catch (error) {
     console.error('[Product API]: ', error);
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Internal server error',
     });
   }

@@ -27,7 +27,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       name: { $regex: name, $options: 'i' },
     });
 
-    await db.disconnectDB();
 
     return res.status(200).json({ products });
   } catch (error) {

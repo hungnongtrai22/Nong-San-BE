@@ -1,4 +1,3 @@
-import { sign } from 'jsonwebtoken';
 
 import { NextApiRequest, NextApiResponse } from 'next';
 import slugify from 'slugify';
@@ -6,7 +5,7 @@ import slugify from 'slugify';
 // utils
 import cors from 'src/utils/cors';
 // _mock
-import { _users, JWT_SECRET, JWT_EXPIRES_IN } from 'src/_mock/_auth';
+import { _users } from 'src/_mock/_auth';
 import Category from 'src/models/category';
 
 import db from '../../../utils/db';
@@ -18,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const { name } = req.body;
 
-    db.connectDB();
+    await db.connectDB();
 
     const test = await Category.findOne({ name });
     if (test) {
@@ -30,7 +29,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       slug: slugify(name),
     }).save();
 
-    db.disconnectDB();
 
     return res.status(200).json({
       category: newCategory,
