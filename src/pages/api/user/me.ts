@@ -4,7 +4,7 @@ import cors from 'src/utils/cors';
 import db from 'src/utils/db';
 import User from 'src/models/user';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
+const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_SECRET || 'your_jwt_secret_key';
 
 // ----------------------------------------------------------------------
 

@@ -6,7 +6,7 @@ import User from 'src/models/user';
 import cors from 'src/utils/cors';
 import db from 'src/utils/db';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
+const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_SECRET || 'your_jwt_secret_key';
 const JWT_EXPIRES_IN = '7d'; // ví dụ: 7 ngày
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
