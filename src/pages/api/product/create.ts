@@ -4,7 +4,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 // utils
 import cors from 'src/utils/cors';
 // _mock
-import { _users } from 'src/_mock/_auth';
 import Product from 'src/models/product';
 import slugify from 'slugify';
 import db from '../../../utils/db';

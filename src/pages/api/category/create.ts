@@ -5,7 +5,6 @@ import slugify from 'slugify';
 // utils
 import cors from 'src/utils/cors';
 // _mock
-import { _users } from 'src/_mock/_auth';
 import Category from 'src/models/category';
 
 import db from '../../../utils/db';

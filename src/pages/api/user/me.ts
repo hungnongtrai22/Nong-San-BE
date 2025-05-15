@@ -13,15 +13,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await cors(req, res);
 
     if (req.method !== 'GET') {
-      res.status(405).json({ message: 'Method not allowed' });
-      return;
+      return res.status(405).json({ message: 'Method not allowed' });
     }
 
     const { authorization } = req.headers;
 
     if (!authorization) {
-      res.status(401).json({ message: 'Authorization token missing' });
-      return;
+      return res.status(401).json({ message: 'Authorization token missing' });
+      
     }
 
     const accessToken = `${authorization}`.split(' ')[1];
@@ -31,15 +30,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       decodedToken = verify(accessToken, JWT_SECRET);
     } catch (err) {
-      res.status(401).json({ message: 'Invalid or expired token' });
-      return;
+      return res.status(401).json({ message: 'Invalid or expired token' });
     }
 
     const userId = decodedToken?.userId;
 
     if (!userId) {
-      res.status(401).json({ message: 'Invalid token payload' });
-      return;
+      return res.status(401).json({ message: 'Invalid token payload' });
+      
     }
 
     await db.connectDB();
@@ -47,14 +45,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const user = await User.findById(userId).select('-password');
 
     if (!user) {
-      res.status(401).json({ message: 'User not found' });
-      return;
+      return res.status(401).json({ message: 'User not found' });
     }
-
 
     return res.status(200).json({ user });
   } catch (error) {
     console.error('[Me API Error]:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
+  return res.status(200).json({ message: 'OK' });
 }
